@@ -228,6 +228,15 @@ def checkDiffer(l, d, epsilon):
             return
     print("The difference is smaller than the epsilon for all the roots")
 
+
+def machineEpsilon(func=float):
+    machine_epsilon = func(1)
+    while func(1)+func(machine_epsilon) != func(1):
+        machine_epsilon_last = machine_epsilon
+        machine_epsilon = func(machine_epsilon) / func(2)
+    return machine_epsilon_last
+
+
 def driver():
     """
     the main program
@@ -235,7 +244,7 @@ def driver():
     """
     x = sp.symbols('x')
     f = (x * (math.exp(1) ** (-x)) + ln(x ** 2)) * (2 * x ** 3 + 2 * x ** 2 - 3 * x - 5)
-    startRange = 0.1
+    startRange = 0 + machineEpsilon()
     endRange = 1.5
     epsilon = 10 ** (-4)
     print("Newton Raphson method")
