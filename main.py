@@ -243,9 +243,9 @@ def checkDiffer(l, d, epsilon):
         print("Root " + str() + ":\nSecant: " + str(l[_]) + ", Newton Raphson: " + str(d[_]))
         if abs(l[_] - d[_]) > epsilon:
             flag = False
-            print("The difference is bigger than the epsilon for some of the roots")
+            print("* The difference is bigger than the epsilon for some of the roots")
             return
-    print("The difference is smaller than the epsilon for all the roots")
+    print("* The difference is smaller than the epsilon for all the roots")
 
 
 def calcFinalResult(result, epsilon, day, hour, minutes):
@@ -283,6 +283,7 @@ def driver():
     the main program
     :return: print the results
     """
+    print("\n******* Part 2 - Q10_a *******")
     x = sp.symbols('x')
     f = (x * (math.exp(1) ** (-x)) + ln(x ** 2)) * (2 * x ** 3 + 2 * x ** 2 - 3 * x - 5)
     startRange = 0 + machineEpsilon()
@@ -293,16 +294,23 @@ def driver():
     print("Secant method")
     d = secant_method(f, startRange, endRange, epsilon)
     checkDiffer(l, d, epsilon)
-
-
 #     ------------ integral ---------------------
-
+    print("\n******* Part 2 - Q10_b *******")
     startRange = 0.5
     endRange = 1
     print("simpson method")
-    print(calcFinalResult(simpson(f, startRange, endRange, 6), epsilon, '13', '18', '52'))
+    s = simpson(f, startRange, endRange, 6)
+    print("Final result: ", end="")
+    print(calcFinalResult(s, epsilon, '13', '18', '52'))
     print("romberg Method")
-    print(calcFinalResult(rombergMethod(f, startRange, endRange, 5, epsilon), epsilon, '13', '18', '33'))
+    r = rombergMethod(f, startRange, endRange, 5, epsilon)
+    print("Final result: ", end="")
+    print(calcFinalResult(r, epsilon, '13', '18', '33'))
+
+    if abs(s - r) <= epsilon:
+        print("\n* The difference between the two methods is smaller than the epsilon")
+    else:
+        print("\n* The difference between the two methods is bigger than the epsilon - needs another method")
 
 
 driver()
