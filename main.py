@@ -1,10 +1,9 @@
 # https://github.com/hadaramsi/part2_q10.git
-import sympy
+import math
+
 import sympy as sp
 from sympy import ln
 from sympy.utilities.lambdify import lambdify
-# from numpy import log as ln
-import math
 
 
 def calcDerivative(func):
@@ -155,7 +154,7 @@ def calcByNewtonRaphson(pol, startPoint, endPoint, epsilon):
     x = sp.symbols('x')
     pol = lambdify(x, pol)
     der = lambdify(x, der)
-    if pol(startPoint) * pol(endPoint) > 0:  # check if the is change in the sign in the function
+    if pol(startPoint) * pol(endPoint) > 0:  # check if there is change in the sign in the function
         return None, None
     print("==== Iterations ====")
     while iteration < 100:
@@ -174,17 +173,6 @@ def calcByNewtonRaphson(pol, startPoint, endPoint, epsilon):
         Xr = Xnext
     print("The system does not converge... :(")
     return None, None
-
-
-def secant_method(polinom, start_point, end_point, epsilon):
-    """
-    :param polinom: Original function
-    :param start_point: int value, the start point of the range
-    :param end_point: int value, the end point of the range
-    :param epsilon: The excepted error
-    :return: None
-    """
-    return rangeDivision(polinom, start_point, end_point, epsilon, calcBySecant)
 
 
 def calcBySecant(polinom, start_point, end_point, epsilon):
@@ -240,11 +228,10 @@ def driver():
     :return: print the results
     """
     x = sp.symbols('x')
-    f = sympy.ln(x ** 2)
-    # f = (x * math.exp(1) ** (-x) + sympy.ln(x ** 2)) * (2 * x ** 3 + 2 * x ** 2 - 3 * x - 5)
+    f = (x * (math.exp(1) ** (-x)) + ln(x ** 2)) * (2 * x ** 3 + 2 * x ** 2 - 3 * x - 5)
     startRange = 0
     endRange = 1.5
-    epsilon = math.pow(10, -4)
+    epsilon = 10 ** (-4)
     print("Newton Raphson method")
     NewtonRaphson(f, startRange, endRange, epsilon)
 
