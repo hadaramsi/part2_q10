@@ -68,7 +68,7 @@ def rombergMethod(f, a, b, end, epsilon):
             print("R" + str(k) + "," + str(j) + " = " + str(results[k][j]))  # print the value
             if abs(results[k][j] - results[k - 1][j]) < epsilon:  # if the difference is less then epsilon
                 return results[k][j]
-    return results[j-1][k-1]
+    return results[j][k]
 
 
 def trapezoidMethod(f, a, b, n):
