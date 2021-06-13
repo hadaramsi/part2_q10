@@ -57,7 +57,7 @@ def rombergMethod(f, a, b, end, epsilon):
     for j in range(2, end + 1):
         for k in range(2, end + 1):
             results[k][j] = results[k][j - 1] + (
-                    (1 / ((4 ** (j - 1)) - 1)) * (results[k][j - 1] - results[k - 1][j - 1]))
+                        (1 / ((4 ** (j - 1)) - 1)) * (results[k][j - 1] - results[k - 1][j - 1]))
             if abs(results[k][j] - results[k - 1][j]) < epsilon:
                 return results[k][j]
 
@@ -154,15 +154,13 @@ def calcByNewtonRaphson(pol, startPoint, endPoint, epsilon):
     x = sp.symbols('x')
     pol = lambdify(x, pol)
     der = lambdify(x, der)
-    if pol(startPoint) * pol(endPoint) > 0:  # check if there is change in the sign in the function
+    if pol(startPoint) * pol(endPoint) > 0:  # check if the is change in the sign in the function
         return None, None
     print("==== Iterations ====")
     while iteration < 100:
         res1 = pol(Xr)
         res2 = der(Xr)
-        print(
-            "Iteration number: " + str(iteration) + ", Xr = " + str(Xr) + ", f(x) = " + str(res1) + ", f`(x) = " + str(
-                res2))
+        print("Iteration number: " + str(iteration) + ", Xr = " + str(Xr) + ", f(x) = " + str(res1) + ", f`(x) = " + str(res2))
         iteration += 1
         Xnext = Xr - (res1 / res2)
         if abs(Xnext - Xr) < epsilon:
@@ -173,6 +171,17 @@ def calcByNewtonRaphson(pol, startPoint, endPoint, epsilon):
         Xr = Xnext
     print("The system does not converge... :(")
     return None, None
+
+
+def secant_method(polinom, start_point, end_point, epsilon):
+    """
+    :param polinom: Original function
+    :param start_point: int value, the start point of the range
+    :param end_point: int value, the end point of the range
+    :param epsilon: The excepted error
+    :return: None
+    """
+    return rangeDivision(polinom, start_point, end_point, epsilon, calcBySecant)
 
 
 def calcBySecant(polinom, start_point, end_point, epsilon):
@@ -194,9 +203,7 @@ def calcBySecant(polinom, start_point, end_point, epsilon):
     while iteration < 100:
         res1 = polinom(Xr)
         res2 = polinom(Xnext)
-        print(
-            "Iteration number: " + str(iteration) + ", Xr = " + str(Xr) + ", f(x) = " + str(res1) + ", f`(x) = " + str(
-                res2))
+        print("Iteration number: " + str(iteration) + ", Xr = " + str(Xr) + ", f(x) = " + str(res1) + ", f`(x) = " + str(res2))
         iteration += 1
         temp = Xnext
         Xnext = ((Xr * res2) - (Xnext * res1)) / (res2 - res1)
@@ -221,7 +228,6 @@ def checkDiffer(l, d, epsilon):
             return
     print("The difference is smaller than the epsilon for all the roots")
 
-
 def driver():
     """
     the main program
@@ -229,11 +235,23 @@ def driver():
     """
     x = sp.symbols('x')
     f = (x * (math.exp(1) ** (-x)) + ln(x ** 2)) * (2 * x ** 3 + 2 * x ** 2 - 3 * x - 5)
-    startRange = 0
+    startRange = 0.1
     endRange = 1.5
     epsilon = 10 ** (-4)
     print("Newton Raphson method")
-    NewtonRaphson(f, startRange, endRange, epsilon)
+    l = NewtonRaphson(f, startRange, endRange, epsilon)
+    print("Secant method")
+    d = secant_method(f, startRange, endRange, epsilon)
+    checkDiffer(l, d, epsilon)
 
+
+#     ------------ integral ---------------------
+
+    startRange = 0.5
+    endRange = 1
+    print("simpson method")
+    print(simpson(f, startRange, endRange, 6))
+    print("romberg Method")
+    print(rombergMethod(f, startRange, endRange, 5, epsilon))
 
 driver()
