@@ -304,6 +304,7 @@ def driver():
     endRange = 1
     print("simpson method")
     s = simpson(f, startRange, endRange, 6)
+    print("area is " + str(s))
     print("Final result: ", end="")
     print(calcFinalResult(s, epsilon, '13', '18', '52'))
     print("romberg Method")
